@@ -20,38 +20,46 @@ import {
   TouchableOpacity,
  } from 'react-native'
 
+
  export default class DeckList extends Component{
+
+    static navigationOptions = () => { 
+        return {
+          title: DeckList
+        }
+      }
+
     state={
-        Decks:[]
+        Decks:[],
+        fetching:false
+    }
+
+    componentWillMount(){
+        this.setState({fetching:true})
+        getDecks().then(Decks => { this.setState({Decks:Decks, fetching: false})})                      
+    }
+
+    componentDidUpdate(){
+        console.log("did update")
+       getDecks().then(Decks => { 
+           this.setState({Decks:Decks, fetching: false})})                      
     }
     
-    componentDidMount(){
-        getDecks()        
-        .then(Decks => {
-           if(Decks !== undefined){
-               this.setState({Decks:Decks})}
-        })
-    }
-    
+  
 
-     static navigationOptions = {
-         tabBarLabel:'DeckList'
-     }
-
-
-     RenderDeck(){
-         if(this.state.Decks !== undefined){
-             return <Deck Decks={Decks}/>
-         }
-         return null;
-     }
+ render(){
+     const {Decks, fetching }=this.state
      
-     render(){
-         return(
-            <View style={{flex: 1, backgroundColor:'blue'}}>       
-                <RenderDeck />
+     console.log(Decks)
+     if(!fetching){
+          return(
+            <View style={{flex:1}}>       
+                <Deck Decks={Decks} />
             </View>
-         )
+         )                 
+     }
+         return <Text>Loading ...</Text>
+       
      }
  }
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux'
+import reducer from './reducers'
 import { createStackNavigator,
          createBottomTabNavigator,
          createDrawerNavigator } from 'react-navigation'
-//import { reducer } from 'reducer'
 import styled from 'styled-components/native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Constants } from 'expo'
@@ -16,21 +16,26 @@ import {
   TouchableOpacity,
  } from 'react-native'
  import DeckList from './components/DeckList'
- import { _storeData,getDecks } from './utils/api'
+ import DeckView from './components/DeckView'
+ import Quiz from './components/Quiz'
 
-
+const store = createStore(
+  reducer
+)
 
 
  function MainNavBar  ({ navigation }) {
   return(
-    <View style={{height:50, backgroundColor:'powderblue'}}>
+    <Provider store={store}>
+     <View style={{height:50, backgroundColor:'powderblue'}}>
       <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
         <MaterialIcons name='menu' size={50} color="blue"/>
       </TouchableOpacity>
       <View style={{justifyContent:'center', alignContent:'flex-start', alignItems:'center'}}>
-        <Text>FlashCards</Text>
+          <Text>FlashCards</Text>
+        </View>
       </View>
-    </View>
+    </Provider>
   )
 }
 
@@ -42,19 +47,38 @@ const StackNavigator = createStackNavigator({
     navigationOptions:{
       title:"DeckList"
     }
-  }
+  },
+  DeckView:{
+    screen: DeckView,
+    navigationOptions:{
+      headerTintColor:"white",
+      headerStyle:{
+        backgroundColor: black
+      }
+    }
+  },
+  DeckView:{
+    screen: Deck,
+    navigationOptions:{
+      headerTintColor:"white",
+      headerStyle:{
+        backgroundColor: black
+      }
+    }
+  },
+  Quiz:{
+    screen: Quiz,
+    navigationOptions:{
+      headerTintColor:"white",
+      headerStyle:{
+        backgroundColor: black
+      }
+    }
 })
-
-
 
 export default class App extends React.Component {
 
-  componentWillMount(){
-    _storeData()   
-  }
-
   render() {
-
     return (
       <View style={{flex: 1}}>
          <View style={{height: Constants.statusBarHeight,justifyContent:'flex-start'}}>
@@ -62,22 +86,9 @@ export default class App extends React.Component {
           </View>
           <StackNavigator/>
         </View>
-
     );
   }
 }
-
-const styles = StyleSheet.create({
-  button:{
-    padding:10
-  }
-})
-
-
-
-
-
-
 
 
 
