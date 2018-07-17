@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Provider } from 'react-redux'
 import { createStackNavigator, 
          createBottomTabNavigator, 
          createDrawerNavigator } from 'react-navigation'
@@ -7,10 +6,9 @@ import { createStackNavigator,
 import styled from 'styled-components/native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Constants } from 'expo'
-import { connect } from 'react-redux'
-import { getDecks } from '../utils/api'
+import { setDeckView } from '../actions'
+import {getDecks} from  '../utils/api'
 import Deck from './Deck'
-
 import { 
   View,
   Platform,          
@@ -20,44 +18,59 @@ import {
   TouchableOpacity,
  } from 'react-native'
 
- export default class DeckList extends Component{
-    state={
-        Decks:[]
+export default class DeckList extends Component{
+    constructor(props){
+        super(props)
+
+        this.state={
+            Decks:[],
+            fetching:false
+        }
+
+        getDecks().then(Decks => { 
+            this.setState(    
+           {Decks:Decks,
+            fetching: false}
+        )}) 
+        console.log("way")    
     }
-    
+
+    static navigationOptions = () => { 
+        return {
+          title: DeckList
+        }
+      }
+
+ 
     componentDidMount(){
-        getDecks()        
-        .then(Decks => {
-           if(Decks !== undefined){
-               this.setState({Decks:Decks})}
-        })
-    }
+        console.log("did update")
     
+       getDecks().then(Decks => { 
+           this.setState({
+               Decks:Decks, 
+               fetching: false
+        })})       
+    }
 
-     static navigationOptions = {
-         tabBarLabel:'DeckList'
-     }
+    shouldComponentUpdate (nextProps) {
+        return nextProps.Decks !== null 
+      }
 
 
-     RenderDeck(){
-         if(this.state.Decks !== undefined){
-             return <Deck Decks={Decks}/>
-         }
-         return null;
-     }
-     
-     render(){
-         return(
-            <View style={{flex: 1, backgroundColor:'blue'}}>       
-                <RenderDeck />
+ render(){
+    const { Decks, fetching } = this.state
+
+    console.log(Decks)
+
+     if(!fetching){
+          return(
+            <View style={{flex:1}}>     
+                <Deck Decks={Decks}/>
             </View>
-         )
+         )                 
+     }
+   return <Text>Loading ...</Text>
      }
  }
 
-/*  export default connect(
-     mapStateToProps,
-     mapDispatchToProps
- )(DeckList); */
 
- 

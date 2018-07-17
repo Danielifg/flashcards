@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native'
 
-export const DECK_STORAGE_KEY = 'UdaciFitness:calendar'
+export const DECK_STORAGE_KEY = '@Danielles:Flashcards'
 
 const Decks =[{
   key:'React',
@@ -27,22 +27,16 @@ const Decks =[{
   ] 
  }
 ]
-
-
-
-export  async function _storeData(){
-    try{
-        await  AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(Decks))
-    }catch(error){
-        console.log(error);
-    }
-}
-
-
-
-export async function getDecks() {
-    return await AsyncStorage.getItem(DECK_STORAGE_KEY)
-    .then(Decks)
+ 
+export function getDecks() {
+    return  AsyncStorage.getItem(DECK_STORAGE_KEY)
+    .then((res) => {
+        if( res == null){
+            AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(Decks))
+            return Decks
+        }     
+        return JSON.parse(res)          
+    })
 }
 
  export function getDeck(id){
