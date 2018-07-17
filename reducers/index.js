@@ -1,9 +1,10 @@
+import { combineReducer } from 'redux'
 import {
     SELECT_DECK,
     setDeckView
 } from '../actions'
 
-function deck (state=[],actions){
+function deck (state=[],action){
     switch(action.type){
         case SELECT_DECK:
             return{
@@ -13,3 +14,5 @@ function deck (state=[],actions){
             return state;    
     }
 }
+
+export default deck

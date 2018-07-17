@@ -30,12 +30,12 @@ const Decks =[{
  
 export function getDecks() {
     return  AsyncStorage.getItem(DECK_STORAGE_KEY)
-    .then((Decks) => {
-        if( Decks == null){
+    .then((res) => {
+        if( res == null){
             AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(Decks))
             return Decks
         }     
-        return JSON.parse(Decks)          
+        return JSON.parse(res)          
     })
 }
 

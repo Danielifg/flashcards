@@ -21,7 +21,7 @@ import {
      render(){
          return(
             <TouchableOpacity onPress={ this.handleDeckSelection(deck)}>
-            <View key={index} style={styles.deck}>    
+             <View key={index} style={styles.deck}>    
       
                <Text style={styles.text}>{deck.title}</Text> 
                 <Text style={{fontColor:"gray", oder:2}}>
