@@ -8,7 +8,10 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { Constants } from 'expo'
 import { setDeckView } from '../actions'
 import {getDecks} from  '../utils/api'
+import { initDecks } from  '../utils/api'
+
 import Deck from './Deck'
+
 import { 
   View,
   Platform,          
@@ -23,16 +26,16 @@ export default class DeckList extends Component{
         super(props)
 
         this.state={
-            Decks:[],
+            Decks:initDecks,
             fetching:false
         }
 
-        getDecks().then(Decks => { 
+       /*  getDecks().then(Decks => { 
             this.setState(    
            {Decks:Decks,
             fetching: false}
         )}) 
-        console.log("way")    
+        console.log("way")   */  
     }
 
     static navigationOptions = () => { 
@@ -42,7 +45,7 @@ export default class DeckList extends Component{
       }
 
  
-    componentDidMount(){
+  /*   componentDidMount(){
         console.log("did update")
     
        getDecks().then(Decks => { 
@@ -50,11 +53,11 @@ export default class DeckList extends Component{
                Decks:Decks, 
                fetching: false
         })})       
-    }
+    } */
 
-    shouldComponentUpdate (nextProps) {
+   /*  shouldComponentUpdate (nextProps) {
         return nextProps.Decks !== null 
-      }
+      } */
 
 
  render(){

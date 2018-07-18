@@ -38,8 +38,9 @@ class Deck extends Component{
         <View>  
             {Decks.map((deck,index) => {
                 return(
-                 <View key={index} >   
-                   <TouchableOpacity onPress={() => this.handleDeckSelection(deck)}>
+                 
+                   <TouchableOpacity key={index} 
+                   onPress={alert("deck")}>
                       <View key={index} style={styles.deck}>    
                          <Text style={styles.text}>{deck.title}</Text> 
                           <Text style={{color:'gray'}}>
@@ -48,7 +49,7 @@ class Deck extends Component{
                         </Text>                       
                      </View>   
                   </TouchableOpacity>
-                </View>   
+              
                    )})}
         </View>  
         )
