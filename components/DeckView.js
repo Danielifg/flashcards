@@ -12,7 +12,7 @@ import {
 class DeckView extends Component{
 
     static navigationOptions = ({ navigation }) => { 
-        const { deck } = navigation.state.params
+     //   const { deck } = navigation.state.params
         return {
           title: DeckList
         }
@@ -28,15 +28,14 @@ class DeckView extends Component{
 
      return(){
 
-         const{ currentDeck, numDeckCards } = this.props
+        // const{ currentDeck, numDeckCards } = this.props
 
-         render(
-             
+         render(           
           <View style={{deckview}} >
               <Text style={{fontSize: 16}}>
-               {currentDeck.title}
+               TITLE DECK
               </Text>
-              <Text style={{fontSize: 16}}>                
+              {/* <Text style={{fontSize: 16}}>                
                {numDeckCards}
               </Text>
 
@@ -50,7 +49,7 @@ class DeckView extends Component{
                             {deck: deck}
                      )}>                     
                     Start Card
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 
             </View>
          )

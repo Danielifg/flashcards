@@ -3,7 +3,7 @@ import { AsyncStorage } from 'react-native'
 export const DECK_STORAGE_KEY = '@Danielles:Flashcards'
 
 export const initDecks =[{
-  key:'React',
+  id:'React',
   title: 'React',
   questions: [
          {
@@ -17,7 +17,7 @@ export const initDecks =[{
        ]
 },
 {
-  key:'Javascript',
+  id:'Javascript',
   title:'Javascript',
   questions: [
     {

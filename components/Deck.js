@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+/* import React, {Component} from 'react';
 import { connect } from 'react-redux'
 import { 
   View,
@@ -11,12 +11,6 @@ import {
  import { setDeckView } from '../actions'
  
 class Deck extends Component{     
-    
-    static navigationOptions = () => { 
-        return {
-          title: DeckList
-        }
-      }
 
     shouldComponentUpdate (nextProps) {
         return nextProps.Decks !== null 
@@ -81,22 +75,4 @@ export default connect(null,
 
 // *********** Style ***************
 
-const styles = StyleSheet.create({
-    deck:{
-       flexDirection: 'row',               
-       padding: 10,
-       justifyContent: 'center',
-       backgroundColor: 'white',
-       height:100,
-       flexWrap: "wrap",
-       borderColor: "black",
-       borderWidth: 1,
-       borderRadius: 10,
-   },
-   text:{
-       fontSize: 45,
-       textAlign: 'center',
-       marginTop: 5,
-   }
-})
-
+ */

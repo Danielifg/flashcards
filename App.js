@@ -21,19 +21,13 @@ import {
  import DeckView from './components/DeckView'
  import Quiz from './components/Quiz'
 
-const store = createStore(
-  reducer
-)
 
 const StackNavigator = createStackNavigator({
-
   DeckList:{
     screen: DeckList ,
     navigationOptions:{
       title:"DeckList"
     }
-    //
-    //screen: props=> <CartScreen {...props} screenProps={other required prop}
   },
   DeckView:{
     screen: DeckView,
@@ -57,12 +51,12 @@ const StackNavigator = createStackNavigator({
 
 export default class App extends React.Component {
   componentWillMount(){
-    getDecks()
-  }
+   // getDecks()
+  };
 
  render() {
     return (
-     <Provider store={store}> 
+     <Provider store={ createStore(reducer) }> 
       <View style={{flex: 1}}>
          <View style={{height: Constants.statusBarHeight,justifyContent:'flex-start'}}>
                 <StatusBar translucent barStyle="light-content"/>
@@ -71,5 +65,5 @@ export default class App extends React.Component {
         </View>
         </Provider>  
     );
-  }
-}
+  };
+};
