@@ -5,54 +5,52 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { Constants } from 'expo'
 import { setDeckView } from '../actions'
 import {getDecks} from  '../utils/api'
-import { initDecks } from  '../utils/api'
+import { initDecks } from  '../utils/db'
 import { connect } from 'react-redux'
+import TextButton from './TextButton'
+import DeckView from './DeckView'
+import { Entypo } from '@expo/vector-icons'
+import DeckListHeader from './DeckListHeader'
 
-
- export class DeckList extends Component{
+class DeckList extends Component{
     constructor(props){
         super(props)
-
         this.state = { 
-            Decks: initDecks,
+            Decks: [],
             fetching:false
-         
-        };      
+        };     
         
-
-       /*  getDecks().then(Decks => { 
+     
+   getDecks().then(Decks => { 
             this.setState(    
            {Decks:Decks,
             fetching: false}
-        )}) 
-        console.log("way")   */  
-        this.handleDeckSelection = this.handleDeckSelection.bind(this);
+        )}
+       ) 
     };
-
-    static navigationOptions = () => { 
-        return {
-          title: DeckList
-        }
-      };
-
  
-  /*   componentDidMount(){
-        console.log("did update")
-    
+  static navigationOptions = ({ navigation }) => { 
+        return {
+          headerTitle: <View style={{flex:1,alignContent:'center'}}> 
+                            <DeckListHeader nav={navigation}/>      
+                      </View>                     
+        }
+      }; 
+ 
+  componentDidMount(){
+       console.log("did update")
        getDecks().then(Decks => { 
            this.setState({
                Decks:Decks, 
                fetching: false
-        })})       a
-    } */
+        })})       
+    } 
 
-   /*  shouldComponentUpdate (nextProps) {
+  shouldComponentUpdate (nextProps) {
         return nextProps.Decks !== null 
-      } */
+      } 
 
-      
-      handleDeckSelection = (item) => {   
-          console.log(item)      
+  handleDeckSelection = (item) => {        
         this.props.setDeckView(item)          
         this.props.navigation.navigate(
               "DeckView",
@@ -68,10 +66,10 @@ import { connect } from 'react-redux'
      if(!fetching){
           return(
            <FlatList
-                data = {initDecks}
+                data = {Decks}
                 renderItem= {({item}) => 
                 
-                    <TouchableOpacity onPress  ={() => this.handleDeckSelection(item)}>
+                    <TouchableOpacity key={item.title} onPress={()=>this.handleDeckSelection(item)}>
                         <View style={styles.deck}>    
                    
                          <Text style={[styles.text,{color:textColor}]}>
@@ -80,7 +78,7 @@ import { connect } from 'react-redux'
  
                            <Text style={{color:'gray'}}>
                                 {item.questions.length}
-                                {(item.questions.lengtht<1)?'card':'cards'}                     
+                                {(item.questions.length)>1?'cards':'card'}                     
                             </Text>
                         </View>   
                      </TouchableOpacity>}
@@ -88,8 +86,8 @@ import { connect } from 'react-redux'
                     keyExtractor={(item,index) => item.id}
            />
          )                 
-     }
-   return <Text>Loading ...</Text>
+      }
+       return <Text>Loading ...</Text>
      }
  }
 
@@ -109,15 +107,15 @@ const styles = StyleSheet.create({
        padding: 10,
        justifyContent: 'center',
        backgroundColor: 'white',
-       height:100,
+       height:70,
        flexWrap: "wrap",
-       borderColor: "black",
-       borderWidth: 1,
-       borderRadius: 10,
+       borderBottomWidth: 1,
+       borderBottomColor:'#D3D3D3'
+
    },
    text:{
-       fontSize: 45,
-       textAlign: 'center',
+       fontSize: 25,
+       textAlign: 'left',
        marginTop: 5,
    }
 })

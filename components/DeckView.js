@@ -8,16 +8,17 @@ import {
   TouchableOpacity,
  } from 'react-native'
  import { connect } from 'react-redux'
+ import DeckListHeader from './DeckListHeader'
 
 class DeckView extends Component{
 
-    static navigationOptions = ({ navigation }) => { 
-     //   const { deck } = navigation.state.params
+       static navigationOptions = ({ navigation }) => { 
         return {
-          title: DeckList
+          headerTitle: <View style={{flex:1,alignContent:'center'}}> 
+                            <DeckListHeader nav={navigation}/>      
+                      </View>                     
         }
-      }
-
+      }; 
 
     handleAddBtn(){
         alert("add")
@@ -26,38 +27,39 @@ class DeckView extends Component{
         alert("start")
     }
 
-     return(){
-
-        // const{ currentDeck, numDeckCards } = this.props
-
-         render(           
-          <View style={{deckview}} >
-              <Text style={{fontSize: 16}}>
-               TITLE DECK
+     render(){    
+        const {deck} = this.props.navigation.state.params
+         return(           
+          <View style={styles.container} >    
+            <View style={styles.section}>
+               <Text style={{fontSize:45,color:'#D3D3D3'}}>                
+                  {deck.title}
+              </Text>        
+                 <Text style={{fontSize:20,textAlign:'center',color:'#D3D3D3'}}>                
+                   {deck.questions.length} {(deck.questions.length)>1?'cards':'card'}
               </Text>
-              {/* <Text style={{fontSize: 16}}>                
-               {numDeckCards}
-              </Text>
-
-               <TouchableOpacity style={{startBtn}} onPress={() => this.handleStartBtn()}>
-                    Add Quiz
+          </View>
+           <View style={styles.section2}>
+               <TouchableOpacity style={styles.addBtn}
+                     onPress={() => this.handleStartBtn()}>
+                   <Text> Add Card </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{addBtn}} 
-                        onPress={this.props.navigation.navigate(
+                <TouchableOpacity style={styles.startBtn} 
+                        onPress={() => this.props.navigation.navigate(
                             "Quiz",
                             {deck: deck}
                      )}>                     
-                    Start Card
-                </TouchableOpacity> */}
-                
-            </View>
+                    <Text style={{color:'white'}}>Start Quiz</Text>
+                </TouchableOpacity>                 
+            </View>          
+          </View>
          )
      }
  }
  const mapStateToProps = (deck) => ({
      currentDeck: deck,
-     numDeckCards: deck.questions.length
+     numDeckCards: deck.questions 
  })
  
  export default connect(
@@ -66,21 +68,42 @@ class DeckView extends Component{
 )(DeckView);
 
 
- const styles = StyleSheet.create({
-     deckview:{
-        flexDirection: 'row',
-        flex:1,
-        marginTop: 10,
-        flexDirection: 'row',               
+ export const styles = StyleSheet.create({
+     container:{    
+        flex:1,    
+        justifyContent:'space-between',
         padding: 10,
-        justifyContent: 'center',
-        backgroundColor: 'white',        
-        flexWrap: "wrap"
+        backgroundColor: 'white'           
      },
-     startBtn:{
-        width:100
+     section:{
+      flex:1,      
+       alignSelf:'center',
+       alignItems:'stretch',
+       justifyContent:'center'
      },
+     section2:{
+       flex:1,
+       flexDirection:'row',       
+       alignSelf:'center',
+       alignItems:'stretch',
+       justifyContent:'space-between',
+       flexWrap:'wrap'
+
+     }, 
      addBtn:{
-        width:100
-     }
+        padding: 10,
+        backgroundColor: 'white',
+        height:50,
+        borderColor: "black",
+        borderWidth: 1,
+        borderRadius: 10,           
+    },
+    startBtn:{
+        padding: 10,
+        backgroundColor: 'black',
+        height:50,
+        borderColor: "white",
+        borderWidth: 1,
+        borderRadius: 5,           
+    }
  })
