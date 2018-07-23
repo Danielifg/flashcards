@@ -10,7 +10,8 @@ export default class DeckListHeader extends Component {
   render() {
     const { nav } = this.props
     _passRoute = () =>{
-      this.props.nav.state.params? nav.navigate("AddCard",{deck:nav.state.params.deck})
+      this.props.nav.state.params? nav.navigate(
+                       "AddCard",{deckTitle: this.props.nav.state.params})
                        : nav.navigate("AddDeck")
     }
     return (        

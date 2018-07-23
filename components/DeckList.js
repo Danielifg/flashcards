@@ -1,32 +1,28 @@
 import React, {Component} from 'react';
-import { View, Platform,StyleSheet,FlatList,Text,TouchableOpacity} from 'react-native'
+import { View, Platform,StyleSheet,FlatList,TouchableOpacity,RefreshControl} from 'react-native'
 import styled from 'styled-components/native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Constants } from 'expo'
 import { setDeckView } from '../actions'
 import {getDecks} from  '../utils/api'
-import { initDecks } from  '../utils/db'
 import { connect } from 'react-redux'
 import TextButton from './TextButton'
 import DeckView from './DeckView'
-import { Entypo } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import DeckListHeader from './DeckListHeader'
+import { Container, Header, Content, Card, CardItem, Icon,Text, Right } from 'native-base';
 
 class DeckList extends Component{
     constructor(props){
         super(props)
         this.state = { 
-            Decks: [],
-            fetching:false
-        };     
-        
-     
-   getDecks().then(Decks => { 
-            this.setState(    
-           {Decks:Decks,
-            fetching: false}
-        )}
-       ) 
+            Decks: [{title:'', questions:[]}],
+            fetching:false,
+            selected: new Map()
+        };                  
+        getDecks().then(initDecks => { 
+            this.setState({Decks:Object.keys(initDecks).map((key) => (initDecks[key])),
+                fetching: false})})  
     };
  
   static navigationOptions = ({ navigation }) => { 
@@ -39,52 +35,94 @@ class DeckList extends Component{
  
   componentDidMount(){
        console.log("did update")
-       getDecks().then(Decks => { 
+        getDecks().then(initDecks => { 
            this.setState({
-               Decks:Decks, 
+               Decks: Object.keys(initDecks).map((key) => (initDecks[key])), 
                fetching: false
-        })})       
+        })})        
     } 
 
-  shouldComponentUpdate (nextProps) {
-        return nextProps.Decks !== null 
-      } 
-
+    shouldComponentUpdate (nextProps) {
+        return nextProps.Decks !== null
+      }  
+ 
   handleDeckSelection = (item) => {        
         this.props.setDeckView(item)          
         this.props.navigation.navigate(
               "DeckView",
               {deck: item}
-       )
+          )
       }
+
+   onUpdate(){      
+       getDecks().then(initDecks => { 
+        this.setState({
+            Decks: Object.keys(initDecks).map((key) => (initDecks[key])), 
+            fetching: false
+         })})
+     _onPressItem(item) 
+   }
+
+   _onPressItem = (item) => {
+    // updater functions are preferred for transactional updates
+    this.setState((state) => {
+      // copy the map rather than modifying state.
+      const selected = new Map(state.selected);
+      selected.set(id, !selected.get(item.title)); // toggle
+      return {selected};
+    });
+  };
+
+  _keyExtractor = (item, index) => item.id;
   
  render(){
-    const { Decks, fetching } = this.state
-    const textColor = this.props.selected? "blue":"black"
-    console.log(Decks)
-
+    const { Decks, fetching, selected } = this.state
+    console.table(Decks) 
+    console.log(selected)
      if(!fetching){
           return(
+
+            <Content>
            <FlatList
-                data = {Decks}
-                renderItem= {({item}) => 
+                data = {Decks}                
+                extraData={Decks}
+                keyExtractor={this._keyExtractor}           
+                renderItem= {({item, index}) =>  
                 
-                    <TouchableOpacity key={item.title} onPress={()=>this.handleDeckSelection(item)}>
-                        <View style={styles.deck}>    
-                   
-                         <Text style={[styles.text,{color:textColor}]}>
-                             {item.title}
-                        </Text>
- 
+                       
+                <ListItem selected>
+                     <Left>
+                         <Text style={[styles.text,{color:'#D3D3D3'}]}>
+                                {item.title}
+                           </Text> 
+                           <Text style={{color:'gray'}}>
+                                {item.questions.length}
+                                {(item.questions.length)>1?'cards':'card'}                     
+                            </Text>
+                     </Left>
+                     <Right>
+                                 <TouchableOpacity onPress={()=>this.handleDeckSelection(item)}>
+                                                  <Icon name="arrow-forward" />
+                                </TouchableOpacity>
+                     </Right>
+                </ListItem>
+/* 
+
+                    <TouchableOpacity key={this._keyExtractor(item)} onPress={()=>this.handleDeckSelection(item)}>
+                        <View style={styles.deck}>                       
+                           <Text style={[styles.text,{color:'#D3D3D3'}]}>
+                                {item.title}
+                           </Text> 
                            <Text style={{color:'gray'}}>
                                 {item.questions.length}
                                 {(item.questions.length)>1?'cards':'card'}                     
                             </Text>
                         </View>   
-                     </TouchableOpacity>}
-                    debug={false}
-                    keyExtractor={(item,index) => item.id}
-           />
+                     </TouchableOpacity> */
+                 }              
+            />
+                  </Content>
+          
          )                 
       }
        return <Text>Loading ...</Text>
@@ -104,10 +142,11 @@ export default connect(null,
 const styles = StyleSheet.create({
     deck:{
        flexDirection: 'row',               
-       padding: 10,
-       justifyContent: 'center',
+       padding: 5,
+       paddingLeft:20,
+       justifyContent: 'flex-start',
        backgroundColor: 'white',
-       height:70,
+       height:50,
        flexWrap: "wrap",
        borderBottomWidth: 1,
        borderBottomColor:'#D3D3D3'

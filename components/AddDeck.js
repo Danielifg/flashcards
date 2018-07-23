@@ -13,8 +13,9 @@ export default class AddDeck extends Component{
         };              
     };
 
-    _addNewDeck(newDeck){
-      addDeck(newDeck)
+    _addNewDeck(newDeck){    
+         addDeck(newDeck)
+         this.props.navigation.navigate("DeckList",{update:true})
     }
 
      render(){

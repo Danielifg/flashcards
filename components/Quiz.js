@@ -15,7 +15,7 @@ import {
     static navigationOptions = ({ navigation }) => { 
         const { deck } = navigation.state.params
         return {
-          title: 'Quiz'
+          title: `${deck.title} Quiz`
         }
       }
 
