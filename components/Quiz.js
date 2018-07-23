@@ -10,7 +10,18 @@ import {
  import { connect } from 'react-redux'
  import { styles } from './DeckView'
 
- class Quiz extends Component{
+ class Quiz extends Component {
+
+    constructor(props){
+        super(props)
+
+        this.state = { 
+            current:this.props.navigation.state.params.deck.questions[0],                      
+            total:this.props.navigation.state.params.deck.questions, 
+            count:0         
+        };                  
+        
+    };
 
     static navigationOptions = ({ navigation }) => { 
         const { deck } = navigation.state.params
@@ -19,38 +30,55 @@ import {
         }
       }
 
+      _onNext(){
+          this.setState({
+              count: this.state.count +1,
+              current: this.props.navigation.state.params.deck.questions[this.state.count+1],      
+          })
+      }
 
       _showAnswer = (answer) =>{
         alert(answer);
       }
 
      render(){
-       const { deck } = this.props.navigation.state.params
+         const {current, total,count} = this.state       
+
+         if(current) {
          return(
           <View style={styles.container}>
-             <Text>count /{deck.questions.length}</Text> 
+             <Text  style={{color:'#2196F3',fontSize:25,alignSelf:'flex-start'}}>{count} /{total.length-1}</Text> 
+             
+             {(total.length>1 && count!=(total.length -1))&&
+                 <TouchableOpacity 
+                     onPress={() => this._onNext()}>        
+                    <Text style={{color:'#2196F3',fontSize:25,alignSelf:'flex-end',marginBottom:20}}> Next </Text>                                                
+                 </TouchableOpacity>}
 
              <View style={styles.section}>                   
-                   <Text style={{fontSize:35,color:'#D3D3D3'}}>{deck.questions[0].question}</Text> 
+                   <Text style={{fontSize:35,color:'#D3D3D3'}}>{current.question}</Text> 
                   
                   <TouchableOpacity 
-                     onPress={() => this._showAnswer(deck.questions[0].answer)}>        
+                     onPress={() => this._showAnswer(current.answer)}>        
                     <Text style={{color:'red',textAlign:'center'}}>Answer</Text>                                                
-                </TouchableOpacity>
+                 </TouchableOpacity>
             
             </View>      
-            <View style={styles.section2}>                  
+            <View style={styles.section2}>  
                 <TouchableOpacity style={style.correctBtn}>        
                     <Text style={style.txt}>Correct</Text>                                                
                 </TouchableOpacity>
                 <TouchableOpacity style={style.incorrectBtn}>        
                     <Text style={style.txt}>Incorrect</Text>                                                
                 </TouchableOpacity>
-                </View>
+           </View>
+
           </View>
-         )
+         )}
+         return <Text>Loading ...</Text>
      }
  }
+
  const mapStateToProps = (deck) => ({
   currentDeck: deck,
   numDeckCards: deck.questions 
