@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { View, Platform,StyleSheet,FlatList,TouchableOpacity,RefreshControl} from 'react-native'
 import styled from 'styled-components/native'
-import { MaterialIcons } from '@expo/vector-icons'
 import { Constants } from 'expo'
 import { setDeckView } from '../actions'
 import {getDecks} from  '../utils/api'
@@ -10,7 +9,7 @@ import TextButton from './TextButton'
 import DeckView from './DeckView'
 import { MaterialIcons } from '@expo/vector-icons'
 import DeckListHeader from './DeckListHeader'
-import { Container, Header, Content, Card, CardItem, Icon,Text, Right } from 'native-base';
+import {  Content, Icon,Text, Right,Left,ListItem } from 'native-base';
 
 class DeckList extends Component{
     constructor(props){
@@ -92,17 +91,17 @@ class DeckList extends Component{
                        
                 <ListItem selected>
                      <Left>
-                         <Text style={[styles.text,{color:'#D3D3D3'}]}>
+                         <Text style={[styles.text,{color:'gray'}]}>
                                 {item.title}
                            </Text> 
-                           <Text style={{color:'gray'}}>
+                           <Text style={{color:'#D3D3D3'}}>
                                 {item.questions.length}
                                 {(item.questions.length)>1?'cards':'card'}                     
                             </Text>
                      </Left>
                      <Right>
                                  <TouchableOpacity onPress={()=>this.handleDeckSelection(item)}>
-                                                  <Icon name="arrow-forward" />
+                                                  <Icon name="arrow-forward"  color='gray' />
                                 </TouchableOpacity>
                      </Right>
                 </ListItem>

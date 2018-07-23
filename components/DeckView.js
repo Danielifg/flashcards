@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
+import { Container, Header, Content, Card, CardItem, Text, Body } from "native-base";
 import { 
   View,
   Platform,          
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
  } from 'react-native'
  import { connect } from 'react-redux'
@@ -29,8 +29,42 @@ class DeckView extends Component{
 
      render(){    
         const {deck} = this.props.navigation.state.params
-         return(           
-          <View style={styles.container} >    
+         return(   
+             
+       
+
+   <View style={styles.container} >    
+      <Container  >
+        <Content padder>
+          <Card style={{height:100}}> 
+            <CardItem header >
+            <Text style={{fontSize:45,color:'#D3D3D3'}}>                
+                  {deck.title}
+              </Text>       
+                           
+              <Text style={{fontSize:20,textAlign:'center',color:'#D3D3D3'}}>                
+                   {deck.questions.length} {(deck.questions.length)>1?'cards':'card'}
+                  </Text>
+                          
+            </CardItem>
+        </Card>
+        </Content>
+      </Container>
+
+
+
+                <View style={styles.section2}>
+                <TouchableOpacity style={styles.startBtn} 
+                        onPress={() => this.props.navigation.navigate(
+                            "Quiz",
+                            {deck: deck}
+                     )}>                     
+                    <Text style={{color:'white'}}>Start Quiz</Text>
+                </TouchableOpacity>                 
+            </View>  
+
+
+          {/* <View style={styles.container} >    
             <View style={styles.section}>
                <Text style={{fontSize:45,color:'#D3D3D3'}}>                
                   {deck.title}
@@ -40,11 +74,6 @@ class DeckView extends Component{
               </Text>
           </View>
            <View style={styles.section2}>
-               {/* <TouchableOpacity style={styles.addBtn}
-                     onPress={() => this.handleStartBtn()}>
-                   <Text> Add Card </Text>
-                </TouchableOpacity>
- */}
                 <TouchableOpacity style={styles.startBtn} 
                         onPress={() => this.props.navigation.navigate(
                             "Quiz",
@@ -52,7 +81,7 @@ class DeckView extends Component{
                      )}>                     
                     <Text style={{color:'white'}}>Start Quiz</Text>
                 </TouchableOpacity>                 
-            </View>          
+            </View>           */}
           </View>
          )
      }
