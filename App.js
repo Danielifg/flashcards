@@ -11,7 +11,7 @@ import { createStore, applyMiddleware } from 'redux'
 import {getDecks} from  './utils/api'
 import  thunk from 'redux-thunk'
 import { Container } from 'native-base';
-import DeckListHeader from './components/DeckListHeader'
+import { setLocalNotification } from './utils/api'
 
 import {
   View,
@@ -95,17 +95,15 @@ export default class App extends React.Component {
 };
   
   async componentWillMount() {
-
     await Expo.Font.loadAsync({
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     });
     this.setState({ fontLoaded: false });
   }
-
-  On(){
-    console.log("works")
-  }
+ componentDidMount(){
+    setLocalNotification()
+ }
 
  render() {
    return(

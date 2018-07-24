@@ -18,6 +18,7 @@ import {
         this.state = { 
             current:this.props.navigation.state.params.deck.questions[0],                      
             total:this.props.navigation.state.params.deck.questions, 
+            corrects:0,
             count:0         
         };                  
         
@@ -39,6 +40,10 @@ import {
 
       _showAnswer = (answer) =>{
         alert(answer);
+      }
+
+      _quiz(){
+       
       }
 
      render(){
@@ -65,10 +70,10 @@ import {
             
             </View>      
             <View style={styles.section2}>  
-                <TouchableOpacity style={style.correctBtn}>        
+                <TouchableOpacity style={style.correctBtn}  onPress={() => this._quiz()}>        
                     <Text style={style.txt}>Correct</Text>                                                
                 </TouchableOpacity>
-                <TouchableOpacity style={style.incorrectBtn}>        
+                <TouchableOpacity style={style.incorrectBtn}  onPress={() => this._quiz()}>        
                     <Text style={style.txt}>Incorrect</Text>                                                
                 </TouchableOpacity>
            </View>

@@ -1,7 +1,9 @@
-import {AsyncStorage} from 'react-native'
+import { AsyncStorage } from 'react-native'
+import { Notifications, Permissions }  from 'expo'
 import initDecks from './db'
 
 export const DECK_KEY = '@Danielles:Flashcards'
+export const NOTIFICATION_KEY = 'Flashcards:notifications'
 
 export function getDecks() {
     return AsyncStorage.getItem(DECK_KEY)
@@ -35,3 +37,48 @@ function getDeck(title){
    }
 
 
+export function clearLocalNotification(){
+  return AsyncStorage.removeItem(NOTIFICATION_KEY)
+    .then(Notifications.cancelAllScheduledNotificationsAsync())
+}
+export function createNotification(){
+  return{
+  title: 'Flashcards',
+  body:'Quiz your new deck',
+  ios:{
+    sound:true
+  },
+  android:{
+    soud:true,
+    priority:'high',
+    sticky: false,
+    vibrate: true
+  }
+ }
+}
+
+export function setLocalNotification(){
+  AsyncStorage.getItem(NOTIFICATION_KEY)
+  .then((data) => {
+    if(data === null){
+        Permissions.askAsync(Permissions.NOTIFICATIONS)
+        .then(({ status }) => {
+          if(status === 'granted'){
+            Notifications.cancelAllScheduledNotificationsAsync()
+            let tomorrow = new Date()
+            tomorrow.setDate(tomorrow.getDate+1)
+            tomorrow.setHours(20)
+            tomorrow.setMinutes(0)
+
+            Notifications.cancelAllScheduledNotificationsAsync(
+              createNotification(),
+              {
+                time: tomorrow,
+                repeat : 'day'
+              }
+            )
+            AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))          }
+        })
+     }
+  })
+}
