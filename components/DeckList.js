@@ -101,7 +101,7 @@ class DeckList extends Component{
                      </Left>
                      <Right>
                                  <TouchableOpacity onPress={()=>this.handleDeckSelection(item)}>
-                                                  <Icon name="arrow-forward"  color='gray' />
+                                                  <Icon name="arrow-forward"  color='gray' size={35} />
                                 </TouchableOpacity>
                      </Right>
                 </ListItem>

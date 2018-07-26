@@ -51,9 +51,7 @@ class DeckView extends Component{
         </Content>
       </Container>
 
-
-
-                <View style={styles.section2}>
+         <View style={styles.section2}>
                 <TouchableOpacity style={styles.startBtn} 
                         onPress={() => this.props.navigation.navigate(
                             "Quiz",
@@ -63,25 +61,6 @@ class DeckView extends Component{
                 </TouchableOpacity>                 
             </View>  
 
-
-          {/* <View style={styles.container} >    
-            <View style={styles.section}>
-               <Text style={{fontSize:45,color:'#D3D3D3'}}>                
-                  {deck.title}
-              </Text>        
-                 <Text style={{fontSize:20,textAlign:'center',color:'#D3D3D3'}}>                
-                   {deck.questions.length} {(deck.questions.length)>1?'cards':'card'}
-              </Text>
-          </View>
-           <View style={styles.section2}>
-                <TouchableOpacity style={styles.startBtn} 
-                        onPress={() => this.props.navigation.navigate(
-                            "Quiz",
-                            {deck: deck}
-                     )}>                     
-                    <Text style={{color:'white'}}>Start Quiz</Text>
-                </TouchableOpacity>                 
-            </View>           */}
           </View>
          )
      }
@@ -129,10 +108,11 @@ class DeckView extends Component{
     },
     startBtn:{
         padding: 10,
-        backgroundColor: 'black',
+        backgroundColor: '#2196F3',
         height:50,
-        borderColor: "white",
-        borderWidth: 1,
-        borderRadius: 5,           
+        width:200,
+        justifyContent:'center'                            
     }
  })
+
+

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text} from 'react-native'
+import {View, StyleSheet, Text,KeyboardAvoidingView} from 'react-native'
 import {Container, Content, InputGroup, Input, Button} from 'native-base'
 import {Entypo} from '@expo/vector-icons'
 import {addCard} from '../utils/api'
@@ -27,9 +27,8 @@ class AddCard extends Component {
     render() {
         const {question, answer} = this.state
         return (
-            <Container style={{
-                flex: 1
-            }}>
+            <KeyboardAvoidingView style={css.content} behavior="padding" enabled>
+            <Container style={{flex: 1}}>
                 <Content contentContainerStyle={css.content}>
 
                     <Text style={{
@@ -71,6 +70,7 @@ class AddCard extends Component {
 
                 </Content>
             </Container>
+            </KeyboardAvoidingView>
         )
     }
 }
@@ -85,6 +85,7 @@ export default connect(mapStateToProps, null)(AddCard)
 
 const css = StyleSheet.create({
     content: {
+        padding:15,
         flex: 1,
         justifyContent: 'space-between',
         alignContent: 'stretch'

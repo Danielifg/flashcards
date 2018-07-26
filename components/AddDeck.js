@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet,Text,View, TextInput} from 'react-native'
+import { StyleSheet,Text,View, TextInput,KeyboardAvoidingView} from 'react-native'
 import {Container, Content, InputGroup, Input, Button } from 'native-base'
 import { Entypo } from '@expo/vector-icons'
 import { addDeck } from '../utils/api' 
@@ -15,11 +15,12 @@ export default class AddDeck extends Component{
 
     _addNewDeck(newDeck){    
          addDeck(newDeck)
-         this.props.navigation.navigate("DeckList",{update:true})
+         this.props.navigation.navigate("DeckList")
     }
 
      render(){
          return(
+          <KeyboardAvoidingView style={css.content} behavior="padding" enabled>
             <Container style={{flex:1}}>
              <Content contentContainerStyle={css.content}>
 
@@ -33,14 +34,17 @@ export default class AddDeck extends Component{
 
                </View>
 
-               <View style={{flexDirection:'row',marginBottom:50 }}>                 
-                 <Button style={{flex:1}} onPress={() => this._addNewDeck(this.state.title)}>
+               <View style={{flexDirection:'row',marginBottom:50,justifyContent:'center'  }}>                 
+               <Button
+                            style={{backgroundColor:'#2196F3', 
+                            marginBottom:70,width:200, 
+                            height:50,justifyContent:'center' }} onPress={() => this._addNewDeck(this.state.title)}>
                     <Text>Add +</Text>
                   </Button>   
                 </View>
-
             </Content>                                    
           </Container>
+          </KeyboardAvoidingView>
          )
      }
  }
@@ -48,6 +52,7 @@ export default class AddDeck extends Component{
 
  const css = StyleSheet.create({
     content: {
+      padding:15,
         flex:1,
       justifyContent:'space-between',
       alignContent:'stretch'

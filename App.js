@@ -1,18 +1,11 @@
 import React from 'react';
 import { Provider } from 'react-redux'
 import reducer from './reducers'
-import { createStackNavigator,
-         createBottomTabNavigator,
-         createDrawerNavigator } from 'react-navigation'
-import styled from 'styled-components/native'
-import { MaterialIcons } from '@expo/vector-icons'
-import { Constants } from 'expo'
+import { createStackNavigator } from 'react-navigation'
 import { createStore, applyMiddleware } from 'redux'
-import {getDecks} from  './utils/api'
 import  thunk from 'redux-thunk'
 import { Container } from 'native-base';
 import { setLocalNotification } from './utils/api'
-
 import {
   View,
   Platform,
@@ -26,6 +19,8 @@ import {
  import Quiz from './components/Quiz'
  import AddDeck from './components/AddDeck'
  import AddCard from './components/AddCard'
+ import Success from './components/Success'
+ 
  
 
 
@@ -67,24 +62,31 @@ const StackNavigator = createStackNavigator({
         backgroundColor: "#2196F3"
       },
     },
-  },  
+  }, Success: {
+    screen: Success
+  },   
  }
 )
 
+
+/* 
 StackNavigator.navigationOptions = ({ navigation }) => {
     let { routeName } = navigation.state.routes[navigation.state.index];
     let headerTitle = routeName;
     return { 
       headerTitle
     }
-}
+} */
 
 
+//******  APP *******//
 
 const store = createStore(
   reducer,
     applyMiddleware(thunk)
 )
+
+
 export default class App extends React.Component {
   constructor(props){
     super(props)
