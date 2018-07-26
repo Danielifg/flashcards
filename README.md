@@ -1,5 +1,8 @@
 ## Flashcards Udacity React Native Nanodegree Project
 
-## Start
+## Run
 Avec Yarn : `yarn start`
 Avec NPM  : `npm install` & `npm start`
+
+## UI Dependencies
+Native Base : `native-base`
