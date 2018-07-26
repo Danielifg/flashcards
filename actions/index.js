@@ -1,5 +1,5 @@
 const SELECT_DECK = 'SELECT_DECK'
-const setDeckView = ({deck}) => ({
+ const setDeckView = ({deck}) => ({
     type: SELECT_DECK,
     deck
 })
