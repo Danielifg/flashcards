@@ -5,4 +5,4 @@ Avec Yarn : `yarn start`
 Avec NPM  : `npm install` & `npm start`
 
 ## UI Dependencies
-Native Base : `native-base`
+Native Base : `npm i native-base`
