@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
-import { 
-  View,
-  Platform,          
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
- } from 'react-native'
+import { StyleSheet,TouchableOpacity } from 'react-native'
  import { connect } from 'react-redux'
  import { styles } from './DeckView'
+ import { Container, Header, View, DeckSwiper,
+         Card, CardItem, Thumbnail, Content, Text, Left, Body, Icon } from 'native-base';
+
 
  class Quiz extends Component {
 
@@ -16,7 +12,8 @@ import {
         super(props)
 
         this.state = { 
-            current:this.props.navigation.state.params.deck.questions[0],                      
+            current:this.props.navigation.state.params.deck.questions[0],         
+            title:this.props.navigation.state.params.deck.title,            
             total:this.props.navigation.state.params.deck.questions, 
             correct:0,
             incorrect:0,
@@ -28,7 +25,7 @@ import {
     static navigationOptions = ({ navigation }) => { 
         const { deck } = navigation.state.params
         return {
-          title: `${deck.title} Quiz`
+          title:  'Quiz'
         }
       }
 
@@ -44,7 +41,7 @@ import {
       }
 
       _onSuccess(){
-          ((this.state.correct+this.state.incorrect)>this.state.total.length-1)&&
+          ((this.state.correct+this.state.incorrect)>=this.state.total.length-1)&&
           this.props.navigation.navigate(
               "Success",
               {
@@ -60,6 +57,7 @@ import {
         this.setState({correct: this.state.correct + 1})
         console.log(this.state.correct)
         console.log(this.state.total.length)
+        this._onNext()
       }
 
 
@@ -67,13 +65,59 @@ import {
         this._onSuccess();
         this.setState({incorrect: this.state.incorrect + 1})
         console.log(this.state.incorrect)
+        this._onNext()
       }
 
 
      render(){
-         const {current, total,count} = this.state       
-            
-         if(current) {
+         const {current, total,count, title} = this.state    
+         const currentArray=[current];
+    console.log(currentArray)
+    if(current)
+    return(<Container> 
+        <View>
+          <DeckSwiper
+            dataSource={currentArray}
+            renderItem={item =>
+                <Content padder>
+              <Card style={{ elevation: 3 , alignContent:'center'}}>
+
+                <CardItem>
+                  <Left>                 
+                    <Body>
+                        <Text>{title}</Text>
+                        <Text style={{fontSize:35,color:'#D3D3D3'}}>{item.question}</Text>   
+                                       
+                    </Body>
+                  </Left>
+                </CardItem>
+
+                <CardItem cardBody style={{ alignContent:'center'}}>
+                              <TouchableOpacity onPress={() => this._showAnswer(item.answer)}>        
+                                   <Text style={{color:'red',textAlign:'center'}}>Answer</Text>                                                
+                              </TouchableOpacity>
+                </CardItem>
+
+                <CardItem>
+                  <Icon name="heart" style={{ color: '#ED4A6A' }} />                                  
+                </CardItem>
+
+              </Card>
+              </Content >
+            }
+            onSwipeRight={()=> this._onCorrect()}
+            onSwipeLeft={()=> this._onIncorrect()}
+          />
+        </View>
+      </Container>)
+      return <Text>Loading ...</Text>
+      
+       
+
+
+
+
+/*          if(current) {
          return(
           <View style={styles.container}>
              <Text  style={{color:'#2196F3',fontSize:25,alignSelf:'flex-start'}}>{count} /{total.length-1}</Text> 
@@ -103,7 +147,7 @@ import {
          )}
          
        
-         return <Text>Loading ...</Text>
+         return <Text>Loading ...</Text> */
      }
  }
 
@@ -133,4 +177,4 @@ export const style = StyleSheet.create({
  txt:{
    color:'white'
  }
-})
+})/*  */
