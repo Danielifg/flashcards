@@ -29,12 +29,12 @@ export default class AddDeck extends Component{
                   <CardItem>
                          <Left>
                         <View style={{flexDirection:'row',marginBottom:50,justifyContent:'center'  }}>                 
-                          <Text style={{fontSize:45,color:'#D3D3D3'}}>Add a new Deck !</Text> 
+                          <Text style={{fontSize:30,color:'#D3D3D3'}}>Add a new Deck !</Text> 
                        </View>
                          </Left>
                       </CardItem>
             
-            <CardItem>
+                <CardItem>
                     <Left>
                    <View style={{flexDirection:'row',marginBottom:50,justifyContent:'center'  }}>                 
                    <CardItem>

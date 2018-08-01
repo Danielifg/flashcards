@@ -1,10 +1,20 @@
 import React, {Component} from 'react';
-import {View, StyleSheet,TextInput,KeyboardAvoidingView} from 'react-native'
-import {Container, Content, InputGroup, Input,Card, CardItem, Text, Button, Left, Body} from 'native-base'
+import {View, StyleSheet, TextInput, KeyboardAvoidingView} from 'react-native'
+import {
+    Container,
+    Content,
+    InputGroup,
+    Input,
+    Card,
+    CardItem,
+    Text,
+    Button,
+    Left,
+    Body
+} from 'native-base'
 import {Entypo} from '@expo/vector-icons'
 import {addCard} from '../utils/api'
 import {connect} from 'react-redux'
-
 
 class AddCard extends Component {
     constructor(props) {
@@ -17,76 +27,99 @@ class AddCard extends Component {
         };
     };
 
-    _addNewCard(question, answer) {      
-          addCard(this.props.deckTitle.deck.title,question,answer);
+    _addNewCard(question, answer) {
+        addCard(this.props.navigation.state.params.deckTitle, question, answer);
+
     }
 
     render() {
         const {question, answer} = this.state
         return (
             <KeyboardAvoidingView style={css.content} behavior="padding" enabled>
-            <Container style={{flex: 1}}>
-                <Content contentContainerStyle={css.content} padder>
+                <Container style={{
+                    flex: 1
+                }}>
+                    <Content contentContainerStyle={css.content} padder>
 
-                <Card style={{flex:0}}>
-                  <CardItem>
-                        <Left>
-                         <Text style={{
-                                fontSize: 45,color:'#D3D3D3'
-                              }}>Add a new Card !</Text>
-                          </Left>
-                  </CardItem>
+                        <Card style={{
+                            flex: 0
+                        }}>
+                            <CardItem>
+                                <Left>
+                                    <Text
+                                        style={{
+                                        fontSize: 30,
+                                        color: '#D3D3D3'
+                                    }}>Add a new Card !</Text>
+                                </Left>
+                            </CardItem>
 
-                  <CardItem>
-                        <Left>
-                        <Body>                             
-                          <Entypo name='edit' size={25} color='#2196F3'/>  
-                          <TextInput placeholder="Question..."
-                            onChangeText={(textQuestion) => {this.setState({question: textQuestion})}}
-                            value={this.state.question}/>
-                              </Body>
-                         </Left>
-                  </CardItem>
+                            <CardItem>
+                                <Left>
+                                    <Body>
+                                        <Entypo name='edit' size={25} color='#2196F3'/>
+                                        <TextInput
+                                            placeholder="Question..."
+                                            onChangeText={(textQuestion) => {
+                                            this.setState({question: textQuestion})
+                                        }}
+                                            value={this.state.question}/>
+                                    </Body>
+                                </Left>
+                            </CardItem>
 
-                  <CardItem>
-                        <Left>
-                        <Body>
+                            <CardItem>
+                                <Left>
+                                    <Body>
 
-                    
-                        <Entypo name='edit' size={25} color='#2196F3'/>
-                        <TextInput style={{color:'#D3D3D3'}}                           
-                            placeholder="Answer"
-                            onChangeText={(textAnswer) => {
-                            this.setState({answer: textAnswer})
-                        }}
-                            value={this.state.answer}/>
-                    
+                                        <Entypo name='edit' size={25} color='#2196F3'/>
+                                        <TextInput
+                                            style={{
+                                            color: '#D3D3D3'
+                                        }}
+                                            placeholder="Answer"
+                                            onChangeText={(textAnswer) => {
+                                            this.setState({answer: textAnswer})
+                                        }}
+                                            value={this.state.answer}/>
 
-                        </Body>
-                         </Left>
-                  </CardItem>
+                                    </Body>
+                                </Left>
+                            </CardItem>
 
+                            <CardItem>
+                                <Left>
+                                    <Body>
+                                        <View
+                                            style={{
+                                            flexDirection: 'row',
+                                            justifyContent: 'center'
+                                        }}>
+                                            <Button
+                                                style={{
+                                                backgroundColor: '#2196F3',
+                                                marginBottom: 70,
+                                                width: 200,
+                                                height: 50,
+                                                justifyContent: 'center'
+                                            }}
+                                                onPress={() => this._addNewCard(question, answer)}>
 
-                  <CardItem>
-                        <Left>
-                            <Body>                                                        
-                               <View style={{flexDirection: 'row',justifyContent:'center'}}>
-                              <Button
-                                   style={{backgroundColor:'#2196F3', 
-                                    marginBottom:70,width:200, 
-                                   height:50,justifyContent:'center' }}
-                                  onPress={() => this._addNewCard(question, answer)}>
+                                                <Text
+                                                    style={{
+                                                    color: 'white',
+                                                    margin: 'auto'
+                                                }}>
+                                                    Submit</Text>
+                                            </Button>
+                                        </View>
+                                    </Body>
+                                </Left>
+                            </CardItem>
 
-                                  <Text style={{ color:'white',margin:'auto'}}> Submit</Text>
-                              </Button>
-                                </View>
-                                </Body>
-                         </Left>
-                  </CardItem>
-
-                    </Card>
-                </Content>
-            </Container>
+                        </Card>
+                    </Content>
+                </Container>
             </KeyboardAvoidingView>
         )
     }
@@ -102,7 +135,7 @@ export default connect(mapStateToProps, null)(AddCard)
 
 const css = StyleSheet.create({
     content: {
-        padding:3,
+        padding: 3,
         flex: 1,
         justifyContent: 'space-between',
         alignContent: 'stretch'
