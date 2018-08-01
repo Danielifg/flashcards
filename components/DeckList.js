@@ -9,7 +9,7 @@ import TextButton from './TextButton'
 import DeckView from './DeckView'
 import { MaterialIcons } from '@expo/vector-icons'
 import DeckListHeader from './DeckListHeader'
-import {  Content, Icon,Text, Right,Left,ListItem } from 'native-base';
+import {  Content, Icon,Text,Container, Right,Left,ListItem } from 'native-base';
 
 class DeckList extends Component{
     constructor(props){
@@ -81,29 +81,41 @@ class DeckList extends Component{
      if(!fetching){
           return(
 
-            <Content>
+        <Content padder>
            <FlatList
                 data = {Decks}                
                 extraData={Decks}
                 keyExtractor={this._keyExtractor}           
-                renderItem= {({item, index}) =>  
-                
-                       
-                <ListItem key={index} selected>
-                     <Left>
-                         <Text style={[styles.text,{color:'gray'}]}>
+                renderItem= {({item, index}) =>                 
+                  
+                <ListItem selected>
+                  
+                  <TouchableOpacity style={{flex :1,flexDirection:'row'}} onPress={()=>this.handleDeckSelection(item)}>      
+                  <View style={{flex :1,flexDirection:'row', justifyContent:'space-between',
+                         flexWrap:'wrap'}}>
+                        
+                        <View  style={{flex :1,flexDirection:'row'}}> 
+                           <View> 
+                             <Text style={[styles.text,{color:'gray'}]}>
+
                                 {item.title}
-                           </Text> 
+                           </Text>
+                           </View>  
+                          
+                           <View>
                            <Text style={{color:'#D3D3D3'}}>
                                 {item.questions.length}
                                 {(item.questions.length)>1?'cards':'card'}                     
                             </Text>
-                     </Left>
-                     <Right>
-                                 <TouchableOpacity onPress={()=>this.handleDeckSelection(item)}>
-                                                  <Icon name="arrow-forward"  color='gray' size={35} />
-                                </TouchableOpacity>
-                     </Right>
+                            </View>
+                        </View> 
+
+                       <View >
+                             <Icon name="arrow-forward"  color='gray' size={15} />  
+                             </View>                     
+                      </View>        
+                      </TouchableOpacity>
+                                     
                 </ListItem>
                  }              
             />

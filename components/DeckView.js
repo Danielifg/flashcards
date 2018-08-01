@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Container, Header, Content, Card, CardItem, Text, Body } from "native-base";
+import { Container, Content, Card, CardItem, Text, Body,Left} from "native-base";
 import { 
   View,
   Platform,          
@@ -20,48 +20,58 @@ class DeckView extends Component{
         }
       }; 
 
-    handleAddBtn(){
-        alert("add")
-    }
-    handleStartBtn(){
-        alert("start")
-    }
+        _handleQuiz = (deck) => {
+            (deck && deck.questions.length==0)?this.props.navigation.navigate('AddCard',{deckTitle:deck.title})
+            :this.props.navigation.navigate('Quiz',{deck:deck})         
+          }
 
-     render(){    
+       render(){    
         const {deck} = this.props.navigation.state.params
-         return(   
-             
-       
+         
 
-   <View style={styles.container} >    
-      <Container  >
+         return(      
+    <Container style={{ flexDirection:'column',flex: 1, justifyContent: 'center'}}>
         <Content padder>
-          <Card style={{height:100}}> 
-            <CardItem header >
-            <Text style={{fontSize:45,color:'#D3D3D3'}}>                
-                  {deck.title}
-              </Text>       
-                           
-              <Text style={{fontSize:20,textAlign:'center',color:'#D3D3D3'}}>                
-                   {deck.questions.length} {(deck.questions.length)>1?'cards':'card'}
-                  </Text>
-                          
-            </CardItem>
-        </Card>
+          
+          <Card style={{flex:0}}>
+              <CardItem style={{justifyContent:"center"}}>
+              
+                         <Text style={{fontSize:45,color:'#D3D3D3'}}>                
+                              {deck.title}
+                         </Text>     
+               
+               </CardItem>
+               
+                <CardItem>
+                      <Left>
+                       <Body>
+                          <Text style={{fontSize:20,textAlign:'center',color:'#D3D3D3'}}>                
+                              {deck.questions.length} {(deck.questions.length)>1?'cards':'card'}
+                          </Text>
+                       </Body>
+                     </Left>
+                </CardItem>
+
+                 <CardItem style={{justifyContent:'center'}}>
+                      <Body>
+                      <View style={{flexDirection: 'row'}}>
+                           <TouchableOpacity style={styles.startBtn} 
+                               onPress={() => this._handleQuiz(deck)}  >                     
+                              
+                              <Text style={{color:'white',textAlign:'center'}}> 
+                                {(deck.questions.length==0)?'Add Card':'Start Quiz'}                                        
+                              </Text>
+
+
+                          </TouchableOpacity>   
+                         </View>    
+                     </Body>
+                </CardItem>                          
+           
+            </Card>
         </Content>
       </Container>
 
-         <View style={styles.section2}>
-                <TouchableOpacity style={styles.startBtn} 
-                        onPress={() => this.props.navigation.navigate(
-                            "Quiz",
-                            {deck: deck}
-                     )}>                     
-                    <Text style={{color:'white'}}>Start Quiz</Text>
-                </TouchableOpacity>                 
-            </View>  
-
-          </View>
          )
      }
  }
@@ -110,8 +120,9 @@ class DeckView extends Component{
         padding: 10,
         backgroundColor: '#2196F3',
         height:50,
-        width:200,
-        justifyContent:'center'                            
+        flex:1,
+        justifyContent:'center',
+        borderRadius:5                            
     }
  })
 
