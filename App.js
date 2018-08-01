@@ -23,7 +23,7 @@ import {
  
  
 
-
+//Main stack Navigator
 const StackNavigator = createStackNavigator({
   DeckList: {
     screen: DeckList
@@ -68,19 +68,6 @@ const StackNavigator = createStackNavigator({
  }
 )
 
-
-/* 
-StackNavigator.navigationOptions = ({ navigation }) => {
-    let { routeName } = navigation.state.routes[navigation.state.index];
-    let headerTitle = routeName;
-    return { 
-      headerTitle
-    }
-} */
-
-
-//******  APP *******//
-
 const store = createStore(
   reducer,
     applyMiddleware(thunk)
@@ -96,6 +83,8 @@ export default class App extends React.Component {
     };              
 };
   
+  
+  //Native-base imports
   async componentWillMount() {
     await Expo.Font.loadAsync({
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
