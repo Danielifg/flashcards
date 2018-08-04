@@ -19,7 +19,7 @@ class DeckList extends Component{
             fetching:false,
             selected: new Map()
         };                  
-        getDecks().then(initDecks => { 
+   getDecks().then(initDecks => { 
             this.setState({Decks:Object.keys(initDecks).map((key) => (initDecks[key])),
                 fetching: false})})  
     };
@@ -85,8 +85,7 @@ class DeckList extends Component{
                 extraData={Decks}
                 keyExtractor={this._keyExtractor}           
                 renderItem= {({item, index}) =>                                               
-                   <ListItem selected>
-                  
+                   <ListItem selected> 
                         <TouchableOpacity  style={{flex :1,flexDirection:'row'}} onPress={()=>this.handleDeckSelection(item)}>      
                            <View style={{flex :1,flexDirection:'row', justifyContent:'space-between',
                               flexWrap:'wrap'}}>
@@ -94,6 +93,7 @@ class DeckList extends Component{
                           <View  style={{flex :1,flexDirection:'row'}}>  
                            <View> 
                              <Text style={[styles.text,{color:'gray'}]}>
+
                                 {item.title}
                            </Text>
                            </View>  
@@ -113,20 +113,6 @@ class DeckList extends Component{
                       </TouchableOpacity>
                                      
                 </ListItem>
-               
-/* 
-
-                    <TouchableOpacity key={this._keyExtractor(item)} onPress={()=>this.handleDeckSelection(item)}>
-                        <View style={styles.deck}>                       
-                           <Text style={[styles.text,{color:'#D3D3D3'}]}>
-                                {item.title}
-                           </Text> 
-                           <Text style={{color:'gray'}}>
-                                {item.questions.length}
-                                {(item.questions.length)>1?'cards':'card'}                     
-                            </Text>
-                        </View>   
-                     </TouchableOpacity> */
                  }              
             />
                   </Content>
