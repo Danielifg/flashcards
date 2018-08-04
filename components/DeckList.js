@@ -72,29 +72,25 @@ class DeckList extends Component{
     });
   };
 
-  _keyExtractor = (item, index) => item.id;
+  _keyExtractor = (item, index) => index.toString()
   
  render(){
     const { Decks, fetching, selected } = this.state
-    console.table(Decks) 
-    console.log(selected)
      if(!fetching){
           return(
 
-        <Content padder>
+            <Content>
            <FlatList
                 data = {Decks}                
                 extraData={Decks}
                 keyExtractor={this._keyExtractor}           
-                renderItem= {({item, index}) =>                 
-                  
-                <ListItem selected>
-                  
-                  <TouchableOpacity style={{flex :1,flexDirection:'row'}} onPress={()=>this.handleDeckSelection(item)}>      
-                  <View style={{flex :1,flexDirection:'row', justifyContent:'space-between',
-                         flexWrap:'wrap'}}>
+                renderItem= {({item, index}) =>                                               
+                   <ListItem selected> 
+                        <TouchableOpacity  style={{flex :1,flexDirection:'row'}} onPress={()=>this.handleDeckSelection(item)}>      
+                           <View style={{flex :1,flexDirection:'row', justifyContent:'space-between',
+                              flexWrap:'wrap'}}>
                         
-                        <View  style={{flex :1,flexDirection:'row'}}> 
+                          <View  style={{flex :1,flexDirection:'row'}}>  
                            <View> 
                              <Text style={[styles.text,{color:'gray'}]}>
 

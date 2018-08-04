@@ -24,17 +24,28 @@ export function getDecks() {
 }
 
 function getDeck(title){  
+  
   return getDecks().then((res) => {
     const a = Object.keys(res).map((key) => (res[key]))
+ //   console.log("getDecks: -------------",a)
       return a.filter(i => i.title === title)
   })
 }
  export function addCard(title,question,answer) {
-    getDeck(title).then( q => {const questions = q[0].questions ;
-       (questions.length>0)?
+    getDeck(title).then( q => { 
+        console.log("add Card :",q)
+      const questions = q[0].questions ;
+      
+      console.log(questions ,"questions")
+
+      console.log(questions.length," : length")
+
+      return  AsyncStorage.mergeItem(DECK_KEY, JSON.stringify({[title]:{title,questions:[...questions,{question,answer}]}}))
+     /*   (questions.length>0)?
           AsyncStorage.mergeItem(DECK_KEY, JSON.stringify({[title]:{title,questions:[...questions,{question,answer}]}}))
-        : AsyncStorage.mergeItem(DECK_KEY, JSON.stringify({[title]:{title,questions:[{question,answer}]}}))})    
-   }
+        : AsyncStorage.mergeItem(DECK_KEY, JSON.stringify({[title]:{title,questions:[{question,answer}]}}))})        */ 
+    })
+  }
 
 
 export function clearLocalNotification(){

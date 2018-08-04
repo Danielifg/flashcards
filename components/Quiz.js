@@ -1,180 +1,246 @@
 import React, {Component} from 'react';
-import { StyleSheet,TouchableOpacity } from 'react-native'
- import { connect } from 'react-redux'
- import { styles } from './DeckView'
- import { Container, Header, View, DeckSwiper,
-         Card, CardItem, Thumbnail, Content, Text, Left, Body, Icon } from 'native-base';
+import {StyleSheet, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
+import {connect} from 'react-redux'
+import {styles} from './DeckView'
+import {
+    Container,
+    Header,
+    View,
+    DeckSwiper,
+    Card,
+    CardItem,
+    Thumbnail,
+    Content,
+    Text,
+    Left,
+    Body,
+    Icon
+} from 'native-base';
+import {MaterialCommunityIcons} from 'react-native-vector-icons'
 
+class Quiz extends Component {
 
- class Quiz extends Component {
-
-    constructor(props){
+    constructor(props) {
         super(props)
 
-        this.state = { 
-            current:this.props.navigation.state.params.deck.questions[0],         
-            title:this.props.navigation.state.params.deck.title,            
-            total:this.props.navigation.state.params.deck.questions, 
-            correct:0,
-            incorrect:0,
-            count:0         
-        };                  
-        
+        this.state = {
+            current: this.props.navigation.state.params.deck.questions[0],
+            title: this.props.navigation.state.params.deck.title,
+            total: this.props.navigation.state.params.deck.questions,
+            modalVisible: false,
+            correct: 0,
+            incorrect: 0,
+            count: 0
+        };
+
     };
 
-    static navigationOptions = ({ navigation }) => { 
-        const { deck } = navigation.state.params
-        return {
-          title:  'Quiz'
-        }
-      }
+    static navigationOptions = ({navigation}) => {
+        const {deck} = navigation.state.params
+        return {title: 'Quiz'}
+    }
 
-      _onNext(){
-          this.setState({
-              count: this.state.count +1,
-              current: this.props.navigation.state.params.deck.questions[this.state.count+1],      
-          })
-      }
 
-      _showAnswer = (answer) =>{
+    _onNext() {
+        this.setState({
+            count: this.state.count + 1,
+            current: this.props.navigation.state.params.deck.questions[this.state.count + 1]
+        })
+    }
+
+    _showAnswer = (answer) => {
         alert(answer);
-      }
+    }
 
-      _onSuccess(){
-          ((this.state.correct+this.state.incorrect)>=this.state.total.length-1)&&
-          this.props.navigation.navigate(
-              "Success",
-              {
-               correct:this.state.correct,
-               incorrect:this.state.incorrect,
-               total: this.state.total
-              },
-          )
-      }
+    _hideModal() {
+        tchis.setModalVisible(!this.state.modalVisible);
+    }
 
-      _onCorrect(){
-        this._onSuccess();
-        this.setState({correct: this.state.correct + 1})
-        console.log(this.state.correct)
-        console.log(this.state.total.length)
+    _onCorrect() {
+
+        this.setState({
+            correct: this.state.correct + 1
+        })
         this._onNext()
-      }
 
+    }
 
-      _onIncorrect(){
-        this._onSuccess();
-        this.setState({incorrect: this.state.incorrect + 1})
-        console.log(this.state.incorrect)
+    _onIncorrect() {
+        this.setState({
+            incorrect: this.state.incorrect + 1
+        })    
         this._onNext()
-      }
+    }
 
+    render() {
+        const {
+            current,
+            total,
+            count,
+            title,
+            correct,
+            incorrect
+        } = this.state
+        const currentArray = [current];
 
-     render(){
-         const {current, total,count, title} = this.state    
-         const currentArray=[current];
-    console.log(currentArray)
-    if(current)
-    return(<Container> 
-        <View>
-          <DeckSwiper
-            dataSource={currentArray}
-            renderItem={item =>
-                <Content padder>
-              <Card style={{ elevation: 3 , alignContent:'center'}}>
+        if (count === total.length) {
+            return (
+                <View style={{
+                    margin:"auto"
+                }}>
+                    <View>
+                        <Text>Score {((correct + incorrect / total.length) * 10)}%</Text>
+                    </View>
+                </View>
+            )
+        } else if (current) {
+            return (
+                <Container
+                    style={{
+                    flex: 1,
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between'
+                }}>
+                    <View>
 
-                <CardItem>
-                  <Left>                 
-                    <Body>
-                        <Text>{title}</Text>
-                        <Text style={{fontSize:35,color:'#D3D3D3'}}>{item.question}</Text>   
-                                       
-                    </Body>
-                  </Left>
-                </CardItem>
+                        <View
+                            style={{
+                            paddingTop: 15,
+                            flexWrap: 'wrap',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end'
+                        }}>
+                            <Text
+                                style={{
+                                color: '#2196F3',
+                                fontSize: 25,
+                                alignSelf: 'center'
+                            }}>{count}
+                                /{total.length}</Text>
+                            <MaterialCommunityIcons
+                                name='comment-question-outline'
+                                size={20}
+                                color='#2196F3'
+                                style={{
+                                marginBottom: 30
+                            }}/>
+                        </View>
 
-                <CardItem cardBody style={{ alignContent:'center'}}>
-                              <TouchableOpacity onPress={() => this._showAnswer(item.answer)}>        
-                                   <Text style={{color:'red',textAlign:'center'}}>Answer</Text>                                                
-                              </TouchableOpacity>
-                </CardItem>
+                        <DeckSwiper
+                            dataSource={currentArray}
+                            renderItem={item => <Content padder>
+                            <Card
+                                style={{
+                                elevation: 3,
+                                alignItems: 'center',
+                                height: 350,
+                                justifyContent: 'space-around'
+                            }}>
+                                <CardItem>
+                                    <Left>
+                                        <Body>
+                                            <Text
+                                                style={{
+                                                color: '#2196F3',
+                                                fontSize: 25
+                                            }}>{title}</Text>
+                                        </Body>
+                                    </Left>
+                                </CardItem>
+                                <CardItem
+                                    style={{
+                                    padding: 5
+                                }}>
+                                    <Text
+                                        style={{
+                                        fontSize: 35,
+                                        color: '#D3D3D3'
+                                    }}>{item.question}</Text>
+                                </CardItem>
+                                <CardItem
+                                    cardBody
+                                    style={{
+                                    alignContent: 'center'
+                                }}>
+                                    <TouchableOpacity onPress={() => alert(item.answer)}>
+                                        <Text
+                                            style={{
+                                            color: '#2196F3',
+                                            fontSize: 20
+                                        }}>Answer</Text>
+                                    </TouchableOpacity>
+                                </CardItem>
+                            </Card>
+                        </Content >}
+                            onSwipeRight={() => this._onCorrect()}
+                            onSwipeLeft={() => this._onIncorrect()}/>
 
-                <CardItem>
-                  <Icon name="heart" style={{ color: '#ED4A6A' }} />                                  
-                </CardItem>
+                    </View>
 
-              </Card>
-              </Content >
-            }
-            onSwipeRight={()=> this._onCorrect()}
-            onSwipeLeft={()=> this._onIncorrect()}
-          />
-        </View>
-      </Container>)
-      return <Text>Loading ...</Text>
-      
-       
+                    <View
+                        style={{
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        justifyContent: 'space-around',
+                        padding: 5,
+                        marginBottom: 70
+                    }}>
 
+                        <View
+                            style={{
+                            flexDirection: 'column'
+                        }}>
+                            <MaterialCommunityIcons name='gesture-swipe-left' size={40} color='#D3D3D3'/>
+                            <Text
+                                style={{
+                                color: '#D3D3D3'
+                            }}>Incorrect</Text>
+                        </View>
 
+                        <View
+                            style={{
+                            flexDirection: 'column'
+                        }}>
+                            <MaterialCommunityIcons name='gesture-swipe-right' size={40} color='#D3D3D3'/>
+                            <Text
+                                style={{
+                                color: '#D3D3D3'
+                            }}>Correct</Text>
+                        </View>
 
+                    </View>
 
-/*          if(current) {
-         return(
-          <View style={styles.container}>
-             <Text  style={{color:'#2196F3',fontSize:25,alignSelf:'flex-start'}}>{count} /{total.length-1}</Text> 
-             
-             {(total.length>1 && count!=(total.length -1))&& <TouchableOpacity  onPress={() => this._onNext()}>        
-                    <Text style={{color:'#2196F3',fontSize:25,alignSelf:'flex-end',marginBottom:20}}> Next </Text>                                                
-                 </TouchableOpacity>}
+                </Container>
+            )
+        }
 
-             <View style={styles.section}>                   
-                   <Text style={{fontSize:35,color:'#D3D3D3'}}>{current.question}</Text> 
-                  
-                  <TouchableOpacity onPress={() => this._showAnswer(current.answer)}>        
-                    <Text style={{color:'red',textAlign:'center'}}>Answer</Text>                                                
-                 </TouchableOpacity>
-            
-            </View>      
-            <View style={styles.section2}>  
-                <TouchableOpacity style={style.correctBtn}  onPress={() => this._onCorrect()}>        
-                    <Text style={style.txt}>Correct</Text>                                                
-                </TouchableOpacity>
-                <TouchableOpacity style={style.incorrectBtn}  onPress={() => this._onIncorrect()}>        
-                    <Text style={style.txt}>Incorrect</Text>                                                
-                </TouchableOpacity>
-           </View>
+        return <Text>Loading ...</Text>
 
-          </View>
-         )}
-         
-       
-         return <Text>Loading ...</Text> */
-     }
- }
+    }
+}
 
- const mapStateToProps = (deck) => ({
-  currentDeck: deck,
-  numDeckCards: deck.questions 
-})
-export default connect(mapStateToProps,null)(Quiz)
+const mapStateToProps = (deck) => ({currentDeck: deck, numDeckCards: deck.questions})
+export default connect(mapStateToProps, null)(Quiz)
 
 export const style = StyleSheet.create({
-  correctBtn:{
-     padding: 10,
-     backgroundColor: 'green',
-     height:50,
-     borderColor: "white",
-     borderWidth: 3,
-     borderRadius: 1,           
- },
- incorrectBtn:{
-     padding: 10,
-     backgroundColor: 'red',
-     height:50,
-     borderColor: "white",
-     borderWidth: 3,
-     borderRadius: 5,           
- },
- txt:{
-   color:'white'
- }
+    correctBtn: {
+        padding: 10,
+        backgroundColor: 'green',
+        height: 50,
+        borderColor: "white",
+        borderWidth: 3,
+        borderRadius: 1
+    },
+    incorrectBtn: {
+        padding: 10,
+        backgroundColor: 'red',
+        height: 50,
+        borderColor: "white",
+        borderWidth: 3,
+        borderRadius: 5
+    },
+    txt: {
+        color: 'white'
+    }
 })/*  */

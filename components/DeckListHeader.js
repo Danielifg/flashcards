@@ -9,11 +9,13 @@ export default class DeckListHeader extends Component {
    
   render() {
     const { nav } = this.props
+
     _passRoute = () =>{
-      this.props.nav.state.params? nav.navigate(
-                       "AddCard",{deckTitle: this.props.nav.state.params})
+                nav.state.params? nav.navigate("AddCard",
+                       {deckTitle: nav.state.params.deck.title})
                        : nav.navigate("AddDeck")
     }
+
     return (        
         <Header style={{backgroundColor:'#2196F3'}}>
           <Left>
@@ -37,4 +39,3 @@ export default class DeckListHeader extends Component {
   }
 }
 
-//title: navigation.state.params.deck.title
