@@ -28,8 +28,9 @@ class AddCard extends Component {
     };
 
     _addNewCard(question, answer) {
-        addCard(this.props.navigation.state.params.deckTitle, question, answer);
-
+        const { deck,deckTitle }= this.props
+        addCard(deckTitle, question, answer);
+        this.props.navigation.navigate('DeckList')
     }
 
     render() {
@@ -59,6 +60,9 @@ class AddCard extends Component {
                                     <Body>
                                         <Entypo name='edit' size={25} color='#2196F3'/>
                                         <TextInput
+                                          style={{
+                                            color: '#D3D3D3'
+                                        }}
                                             placeholder="Question..."
                                             onChangeText={(textQuestion) => {
                                             this.setState({question: textQuestion})
